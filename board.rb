@@ -1,4 +1,6 @@
 class Board
+	include Enumerable
+
 	@@sequences = [:top, :middle, :bottom, :left, :center, :right, :left_diag, :right_diag]
 	@@markers = [:X, :O]
 
@@ -9,6 +11,8 @@ class Board
 			@board = Array.new 9
 		end
 	end
+
+	private
 
 	def translate(cell)
 		if cell < 1
@@ -32,20 +36,24 @@ class Board
 		@@markers.include? marker
 	end
 
-	private :translate, :valid_cell?, :valid_seq?
-
-	def get(cell)
-		return nil unless valid_cell? cell
-
-		@board[translate cell]
-	end
-
 	def get_s(cell)
 		return "" unless valid_cell? cell
 
 		c = get cell
 
 		c == nil ? cell : c
+	end
+
+	public
+
+	def each
+		@@sequences.each { |s| yield s }
+	end
+
+	def get(cell)
+		return nil unless valid_cell? cell
+
+		@board[translate cell]
 	end
 
 	def set(cell, marker)
@@ -89,7 +97,7 @@ class Board
 		end
 	end
 
-	def finished?(sequence)
+	def full?(sequence)
 		if valid_seq? sequence
 			get_seq(sequence).count(nil) == 0
 		else
@@ -98,7 +106,7 @@ class Board
 	end
 
 	def threatening?(sequence, marker = nil)
-		return false if !valid_seq?(sequence) or finished? sequence
+		return false if !valid_seq?(sequence) or full? sequence
 
 		if marker and valid_marker? marker
 			get_seq(sequence).count(marker) == 2
@@ -107,13 +115,27 @@ class Board
 		end
 	end
 
-	def won?(sequence, marker = nil)
-		return false unless valid_seq? sequence and finished? sequence
+	def winning?(sequence, marker = nil)
+		return false unless valid_seq? sequence and full? sequence
 
 		if marker and valid_marker? marker
 			get_seq(sequence).count { |m| m == marker } == 3
 		else
 			get_seq(sequence).count { |m| @@markers.include? m } == 3
+		end
+	end
+
+	def tied?
+		all? { |s| full?(s) and !winning?(s) }
+	end
+
+	def won?
+		any? { |s| winning? s }
+	end
+
+	def winner
+		each do |s|
+			return get_seq(s)[0] if winning? s
 		end
 	end
 
