@@ -2,7 +2,30 @@ class Board
 	include Enumerable
 
 	@@sequences = [:top, :middle, :bottom, :left, :center, :right, :left_diag, :right_diag]
-	@@markers = [:X, :O]
+
+	class << self
+		def translate(cell)
+			if cell < 1
+				0
+			elsif cell > 10
+				8
+			else
+				cell - 1
+			end
+		end
+
+		def valid_cell?(cell)
+			cell > 0 and cell < 10
+		end
+
+		def valid_seq?(sequence)
+			@@sequences.include? sequence
+		end
+
+		def valid_marker?(marker)
+			marker == :X or marker == :O
+		end
+	end
 
 	def initialize(board = nil)
 		if board and board.length >= 9
@@ -14,30 +37,8 @@ class Board
 
 	private
 
-	def translate(cell)
-		if cell < 1
-			0
-		elsif cell > 10
-			8
-		else
-			cell - 1
-		end
-	end
-
-	def valid_cell?(cell)
-		cell > 0 and cell < 10
-	end
-
-	def valid_seq?(sequence)
-		@@sequences.include? sequence
-	end
-
-	def valid_marker?(marker)
-		@@markers.include? marker
-	end
-
 	def get_s(cell)
-		return "" unless valid_cell? cell
+		return "" unless Board.valid_cell? cell
 
 		c = get cell
 
@@ -51,29 +52,29 @@ class Board
 	end
 
 	def get(cell)
-		return nil unless valid_cell? cell
+		return nil unless Board.valid_cell? cell
 
-		@board[translate cell]
+		@board[Board.translate cell]
 	end
 
 	def set(cell, marker)
-		return nil unless valid_cell? cell and valid_marker? marker
+		return nil unless Board.valid_cell? cell and Board.valid_marker? marker
 
-		@board[translate cell] = marker unless set? cell
+		@board[Board.translate cell] = marker unless set? cell
 	end
 
 	def set?(cell, marker = nil)
-		return false unless valid_cell? cell
+		return false unless Board.valid_cell? cell
 
-		if marker and valid_marker? marker
-			@board[translate cell] == marker
+		if marker and Board.valid_marker? marker
+			@board[Board.translate cell] == marker
 		else
-			@board[translate cell]
+			@board[Board.translate cell]
 		end
 	end
 
 	def get_seq(sequence)
-		return nil unless valid_seq? sequence
+		return nil unless Board.valid_seq? sequence
 
 		case sequence
 			when :top
@@ -98,7 +99,7 @@ class Board
 	end
 
 	def full?(sequence)
-		if valid_seq? sequence
+		if Board.valid_seq? sequence
 			get_seq(sequence).count(nil) == 0
 		else
 			false
@@ -106,9 +107,9 @@ class Board
 	end
 
 	def threatening?(sequence, marker = nil)
-		return false if !valid_seq?(sequence) or full? sequence
+		return false if !Board.valid_seq?(sequence) or full? sequence
 
-		if marker and valid_marker? marker
+		if marker and Board.valid_marker? marker
 			get_seq(sequence).count(marker) == 2
 		else
 			get_seq(sequence).count(nil) == 1
@@ -116,12 +117,12 @@ class Board
 	end
 
 	def winning?(sequence, marker = nil)
-		return false unless valid_seq? sequence and full? sequence
+		return false unless Board.valid_seq? sequence and full? sequence
 
-		if marker and valid_marker? marker
+		if marker and Board.valid_marker? marker
 			get_seq(sequence).count { |m| m == marker } == 3
 		else
-			get_seq(sequence).count { |m| @@markers.include? m } == 3
+			winning?(sequence, :X) or winning?(sequence, :O)
 		end
 	end
 

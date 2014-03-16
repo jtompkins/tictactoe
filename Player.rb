@@ -1,4 +1,6 @@
 class Player
+	attr_reader :marker
+
 	def initialize(board, marker)
 		@board = board
 		@marker = marker
