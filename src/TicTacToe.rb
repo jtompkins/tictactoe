@@ -1,6 +1,6 @@
 require_relative "Board"
-require_relative "HumanPlayer"
-require_relative "AiPlayer"
+require_relative "players/HumanPlayer"
+require_relative "players/AiPlayer"
 
 class TicTacToe
 	class << self

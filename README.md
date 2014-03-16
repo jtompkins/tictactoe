@@ -93,3 +93,7 @@ def basic_strategy
 	#nothing is open, so just bail
 end
 ````
+
+**What's the best way to organize a project?**
+
+Specifically, where do the files go? And do you capitalize the name of a file containing a class?

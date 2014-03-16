@@ -1,4 +1,3 @@
-require_relative "Board"
 require_relative "Player"
 
 class AiPlayer < Player
