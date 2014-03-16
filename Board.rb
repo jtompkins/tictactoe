@@ -71,29 +71,35 @@ class Board
 		end
 	end
 
-	def get_seq(sequence)
+	def get_seq_index(sequence)
 		return nil unless Board.valid_seq? sequence
 
 		case sequence
 			when :top
-				[get(1), get(2), get(3)]
+				[1, 2, 3]
 			when :middle
-				[get(4), get(5), get(6)]
+				[4, 5, 6]
 			when :bottom
-				[get(7), get(8), get(9)]
+				[7, 8, 9]
 
 			when :left
-				[get(1), get(4), get(7)]
+				[1, 4, 7]
 			when :center
-				[get(2), get(5), get(8)]
+				[2, 5, 8]
 			when :right
-				[get(3), get(6), get(9)]
+				[3, 6, 9]
 
 			when :left_diag
-				[get(1), get(5), get(9)]
+				[1, 5, 9]
 			when :right_diag
-				[get(3), get(5), get(7)]
+				[3, 5, 7]
 		end
+	end
+
+	def get_seq(sequence)
+		return nil unless Board.valid_seq? sequence
+
+		get_seq_index(sequence).collect { |i| get i }
 	end
 
 	def full?(sequence)
