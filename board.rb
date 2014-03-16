@@ -57,7 +57,11 @@ class Board
 	def set?(cell, marker = nil)
 		return false unless valid_cell? cell
 
-		marker && valid_marker?(marker) ? @board[translate cell] == marker : @board[translate cell] != nil
+		if marker and valid_marker? marker
+			@board[translate cell] == marker
+		else
+			@board[translate cell]
+		end
 	end
 
 	def get_seq(sequence)
@@ -94,7 +98,7 @@ class Board
 	end
 
 	def threatening?(sequence, marker = nil)
-		return false if !(valid_seq? sequence) or finished? sequence
+		return false if !valid_seq?(sequence) or finished? sequence
 
 		if marker and valid_marker? marker
 			get_seq(sequence).count(marker) == 2
