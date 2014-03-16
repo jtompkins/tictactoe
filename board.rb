@@ -3,28 +3,26 @@ class Board
 
 	@@sequences = [:top, :middle, :bottom, :left, :center, :right, :left_diag, :right_diag]
 
-	class << self
-		def translate(cell)
-			if cell < 1
-				0
-			elsif cell > 10
-				8
-			else
-				cell - 1
-			end
+	def self.translate(cell)
+		if cell < 1
+			0
+		elsif cell > 10
+			8
+		else
+			cell - 1
 		end
+	end
 
-		def valid_cell?(cell)
-			cell > 0 and cell < 10
-		end
+	def self.valid_cell?(cell)
+		cell > 0 and cell < 10
+	end
 
-		def valid_seq?(sequence)
-			@@sequences.include? sequence
-		end
+	def self.valid_seq?(sequence)
+		@@sequences.include? sequence
+	end
 
-		def valid_marker?(marker)
-			marker == :X or marker == :O
-		end
+	def self.valid_marker?(marker)
+		marker == :X or marker == :O
 	end
 
 	def initialize(board = nil)
@@ -132,12 +130,6 @@ class Board
 
 	def won?
 		any? { |s| winning? s }
-	end
-
-	def winner
-		each do |s|
-			return get_seq(s)[0] if winning? s
-		end
 	end
 
 	def to_s
