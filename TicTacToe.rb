@@ -31,30 +31,39 @@ class TicTacToe
 	end
 
 	def play
-		puts "Welcome to Tic-Tac-Toe. Here's the board:"
+		system "clear" or system "cls"
 
+		puts "Welcome to Tic-Tac-Toe. Here's the board:"
+		puts
 		puts @board
+		puts
 
 		loop do
 			puts "Player #{@current_player.marker}, make your move."
 
 			@current_player.move
 
-			if @board.won?
-				puts "Player #{@current_player.marker}, you won. Congratulations!"
+			system "clear" or system "cls"
 
+			puts "Current board: "
+			puts
+
+			if @board.won?
 				puts @board
+				puts
+				puts "Player #{@current_player.marker}, you won. Congratulations!"
 
 				break
 			elsif @board.tied?
-				puts "Tie game! Better luck next time."
-
 				puts @board
+				puts
+				puts "Tie game! Better luck next time."
 
 				break
 			end
 
 			puts @board
+			puts
 
 			switch_players
 		end
