@@ -72,7 +72,7 @@ class AiPlayer < Player
 		#corner isn't open, check the center
 		return @board.set @@spaces[:center], @marker unless @board.set? @@spaces[:center]
 
-		#corners aren't open, check the edges
+		#center isn't open, check the edges
 		open_edge = find_open_edge
 
 		return @board.set open_edge, @marker if open_edge
