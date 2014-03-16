@@ -16,7 +16,6 @@ class Player
 		valid_marker?(marker) and @marker == marker
 	end
 
-
 	def move
 		raise NotImplementedError
 	end
