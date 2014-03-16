@@ -64,13 +64,13 @@ class AiPlayer < Player
 		return @board.set find_empty_in_seq(threatening), @marker if threatening
 
 		#no winning or threatening moves, so let's just pick a spot
-		#first, check the center
-		return @board.set @@spaces[:center], @marker unless @board.set? @@spaces[:center]
-
-		#center isn't open, check the corners
+		#first, check the corners
 		open_corner = find_open_corner
 
 		return @board.set open_corner, @marker if open_corner
+
+		#corner isn't open, check the center
+		return @board.set @@spaces[:center], @marker unless @board.set? @@spaces[:center]
 
 		#corners aren't open, check the edges
 		open_edge = find_open_edge
