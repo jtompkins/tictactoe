@@ -139,10 +139,12 @@ class Board
 	end
 
 	def to_s
-		puts " #{get_s(1)} | #{get_s(2)} | #{get_s(3)} "
-		puts "-----------"
-		puts " #{get_s(4)} | #{get_s(5)} | #{get_s(6)} "
-		puts "-----------"
-		puts " #{get_s(7)} | #{get_s(8)} | #{get_s(9)} "
+		str = " #{get_s(1)} | #{get_s(2)} | #{get_s(3)} \n"
+		str << "-----------\n"
+		str << " #{get_s(4)} | #{get_s(5)} | #{get_s(6)} \n"
+		str << "-----------\n"
+		str << " #{get_s(7)} | #{get_s(8)} | #{get_s(9)} \n"
+
+		str
 	end
 end

@@ -7,7 +7,7 @@ class HumanPlayer < Player
 
 			puts "Please choose an open space (1-9):"
 
-			space = gets.chomp.to_i
+			space = $stdin.gets.chomp.to_i
 
 			if !Player.valid_space? space
 				puts "Invalid space, please try again."

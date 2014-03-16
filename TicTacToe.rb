@@ -40,8 +40,6 @@ class TicTacToe
 
 			@current_player.move
 
-			puts
-
 			if @board.won?
 				puts "Player #{@current_player.marker}, you won. Congratulations!"
 
@@ -61,4 +59,22 @@ class TicTacToe
 			switch_players
 		end
 	end
+end
+
+def parse_arg(arg)
+	if arg == "h" or arg == "human"
+		:human
+	elsif arg == "a" or arg == "ai"
+		:ai
+	else
+		:ai
+	end
+end
+
+if ARGV.length == 2
+	game = TicTacToe.new parse_arg(ARGV[0]), parse_arg(ARGV[1])
+
+	game.play
+else
+	puts "Usage: TicTacToe.rb {h|a} {h|a}"
 end
