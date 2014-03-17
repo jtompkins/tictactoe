@@ -67,7 +67,7 @@ class Board
 		if marker and Board.valid_marker? marker
 			@board[Board.translate cell] == marker
 		else
-			@board[Board.translate cell]
+			@board[Board.translate cell] != nil
 		end
 	end
 

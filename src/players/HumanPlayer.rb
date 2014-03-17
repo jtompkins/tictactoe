@@ -1,4 +1,5 @@
 require_relative "Player"
+require_relative "../Board"
 
 class HumanPlayer < Player
 	def move
@@ -7,14 +8,14 @@ class HumanPlayer < Player
 
 			puts "Please choose an open space (1-9):"
 
-			space = $stdin.gets.chomp.to_i
+			cell = $stdin.gets.chomp.to_i
 
-			if !Player.valid_space? space
+			if !Board.valid_cell? cell
 				puts "Invalid space, please try again."
-			elsif @board.set? space
+			elsif @board.set? cell
 				puts "That space is already taken, please try again."
 			else
-				@board.set space, @marker
+				@board.set cell, @marker
 				break
 			end
 		end
