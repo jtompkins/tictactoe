@@ -1,8 +1,8 @@
 # Learning Ruby - TicTacToe
 
-I'm trying to learn Ruby, one program at a time. This time out, I implemented a simple Tic-Tac-Toe game.
+I'm trying to learn Ruby, one program at a time. This time, I implemented a simple Tic-Tac-Toe game.
 
-This is my first time out with Ruby, so the code might not be very good/idiomatic/whatever. Hopefully I'll get better with this over time.
+This is my first time out with Ruby, so the code might not be very good/idiomatic/whatever. Hopefully I'll get better over time.
 
 ## Usage
 
