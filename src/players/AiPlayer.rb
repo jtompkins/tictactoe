@@ -15,7 +15,7 @@ class AiPlayer < Player
 		bottom: 8
 	}
 
-	def opposite_side(marker)
+	def other_player(marker)
 		marker == :X ? :O : :X
 	end
 
@@ -58,7 +58,7 @@ class AiPlayer < Player
 		return @board.set find_empty_in_seq(winning), @marker if winning
 
 		#look for a threatening move,
-		threatening = find_threatening opposite_side(@marker)
+		threatening = find_threatening other_player(@marker)
 
 		return @board.set find_empty_in_seq(threatening), @marker if threatening
 
