@@ -3,13 +3,11 @@ require_relative "players/HumanPlayer"
 require_relative "players/AiPlayer"
 
 class TicTacToe
-	class << self
-		def make_player(type, board, marker)
-			if type == :human
-				HumanPlayer.new board, marker
-			else
-				AiPlayer.new board, marker
-			end
+	def self.make_player(type, board, marker)
+		if type == :human
+			HumanPlayer.new board, marker
+		else
+			AiPlayer.new board, marker
 		end
 	end
 
@@ -30,6 +28,13 @@ class TicTacToe
 		end
 	end
 
+	def print_board
+		puts "Current Board"
+		puts
+		puts @board
+		puts
+	end
+
 	def play
 		system "clear" or system "cls"
 
@@ -45,27 +50,23 @@ class TicTacToe
 
 			system "clear" or system "cls"
 
-			puts "Current board: "
-			puts
-
 			if @board.won?
-				puts @board
-				puts
+				print_board
+
 				puts "Player #{@current_player.marker}, you won. Congratulations!"
 
 				break
 			elsif @board.tied?
-				puts @board
-				puts
+				print_board
+
 				puts "Tie game! Better luck next time."
 
 				break
+			else
+				print_board
+
+				switch_players
 			end
-
-			puts @board
-			puts
-
-			switch_players
 		end
 	end
 end
