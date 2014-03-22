@@ -1,3 +1,5 @@
+require_relative "board"
+
 class Sequence
 	def initialize(cells)
 		unless cells.is_a? Hash and cells.length == 3
