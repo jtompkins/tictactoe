@@ -1,5 +1,5 @@
-require_relative "Player"
 require_relative "../Board"
+require_relative "Player"
 
 class HumanPlayer < Player
 	def move

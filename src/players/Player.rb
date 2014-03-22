@@ -1,3 +1,5 @@
+require_relative "../Board"
+
 class Player
 	attr_reader :marker
 
@@ -7,7 +9,7 @@ class Player
 	end
 
 	def same_marker?(marker)
-		valid_marker?(marker) and @marker == marker
+		Board.valid_marker?(marker) and @marker == marker
 	end
 
 	def move

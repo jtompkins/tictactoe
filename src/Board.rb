@@ -1,7 +1,25 @@
+require_relative "Sequence"
+
 class Board
 	include Enumerable
 
 	@@sequences = [:top, :middle, :bottom, :left, :center, :right, :left_diag, :right_diag]
+
+	@@markers = [:X, :O]
+
+	@@spaces = {
+		upper_left: 1,
+		upper_right: 3,
+		lower_left: 7,
+		lower_right: 9,
+
+		center: 5,
+
+		top: 2,
+		left: 4,
+		right: 6,
+		bottom: 8
+	}
 
 	def self.translate(cell)
 		if cell < 1
@@ -13,16 +31,20 @@ class Board
 		end
 	end
 
-	def self.valid_cell?(cell)
-		cell > 0 and cell < 10
-	end
-
 	def self.valid_seq?(sequence)
 		@@sequences.include? sequence
 	end
 
+	def self.valid_space?(space)
+		@@spaces.include? space
+	end
+
+	def self.valid_cell?(cell)
+		cell > 0 and cell < 10
+	end
+
 	def self.valid_marker?(marker)
-		marker == :X or marker == :O
+		@@markers.include? marker
 	end
 
 	def initialize(board = nil)
@@ -35,10 +57,10 @@ class Board
 
 	private
 
-	def get_s(cell)
+	def get(cell)
 		return "" unless Board.valid_cell? cell
 
-		c = get cell
+		c = @board[Board.translate cell]
 
 		c == nil ? cell : c
 	end
@@ -46,35 +68,48 @@ class Board
 	public
 
 	def each
-		@@sequences.each { |s| yield s }
-	end
-
-	def get(cell)
-		return nil unless Board.valid_cell? cell
-
-		@board[Board.translate cell]
+		@@sequences.each { |s| yield get_seq s }
 	end
 
 	def set(cell, marker)
-		return nil unless Board.valid_cell? cell and Board.valid_marker? marker
+		raise ArgumentError, "Invalid marker." unless Board.valid_marker? marker
 
-		@board[Board.translate cell] = marker unless set? cell
+		if cell.is_a? Symbol
+			raise ArgumentError, "Invalid space." unless Board.valid_space? cell
+
+			c = @@spaces[cell]
+		else
+			raise ArgumentError, "Invalid cell." unless Board.valid_cell? cell
+
+			c = cell
+		end
+
+		@board[Board.translate c] = marker unless set? c
+
 	end
 
 	def set?(cell, marker = nil)
-		return false unless Board.valid_cell? cell
-
-		if marker and Board.valid_marker? marker
-			@board[Board.translate cell] == marker
-		else
-			@board[Board.translate cell] != nil
+		if marker and !Board.valid_marker? marker
+			raise ArgumentError, "Invalid marker."
 		end
+
+		if cell.is_a? Symbol
+			raise ArgumentError, "Invalid space." unless Board.valid_space? cell
+
+			c = Board.translate @@spaces[cell]
+		else
+			raise ArgumentError, "Invalid cell." unless Board.valid_cell? cell
+
+			c = Board.translate cell
+		end
+
+		marker ? @board[c] == marker : @board[c] != nil
 	end
 
-	def get_seq_index(sequence)
+	def get_seq(sequence)
 		return nil unless Board.valid_seq? sequence
 
-		case sequence
+		indices = case sequence
 			when :top
 				[1, 2, 3]
 			when :middle
@@ -94,56 +129,24 @@ class Board
 			when :right_diag
 				[3, 5, 7]
 		end
-	end
 
-	def get_seq(sequence)
-		return nil unless Board.valid_seq? sequence
-
-		get_seq_index(sequence).collect { |i| get i }
-	end
-
-	def full?(sequence)
-		if Board.valid_seq? sequence
-			get_seq(sequence).count(nil) == 0
-		else
-			false
-		end
-	end
-
-	def threatening?(sequence, marker = nil)
-		return false if !Board.valid_seq?(sequence) or full? sequence
-
-		if marker and Board.valid_marker? marker
-			get_seq(sequence).count(marker) == 2
-		else
-			get_seq(sequence).count(nil) == 1
-		end
-	end
-
-	def winning?(sequence, marker = nil)
-		return false unless Board.valid_seq? sequence and full? sequence
-
-		if marker and Board.valid_marker? marker
-			get_seq(sequence).count { |m| m == marker } == 3
-		else
-			winning?(sequence, :X) or winning?(sequence, :O)
-		end
+		Sequence.new indices.map { |i| [i, get(i)]}.to_h
 	end
 
 	def tied?
-		all? { |s| full?(s) and !winning?(s) }
+		all? { |s| s.full? and !s.winning? }
 	end
 
 	def won?
-		any? { |s| winning? s }
+		any? { |s| s.winning? }
 	end
 
 	def to_s
-		str = " #{get_s(1)} | #{get_s(2)} | #{get_s(3)} \n"
+		str = " #{get(1)} | #{get(2)} | #{get(3)} \n"
 		str << "-----------\n"
-		str << " #{get_s(4)} | #{get_s(5)} | #{get_s(6)} \n"
+		str << " #{get(4)} | #{get(5)} | #{get(6)} \n"
 		str << "-----------\n"
-		str << " #{get_s(7)} | #{get_s(8)} | #{get_s(9)} \n"
+		str << " #{get(7)} | #{get(8)} | #{get(9)} \n"
 
 		str
 	end
