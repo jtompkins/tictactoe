@@ -2,8 +2,8 @@ require_relative "../Board"
 require_relative "Player"
 
 class AiPlayer < Player
-	def other_player(marker)
-		marker == :X ? :O : :X
+	def identify_other_player
+		@marker == :X ? :O : :X
 	end
 
 	def find_open_corner
@@ -36,22 +36,18 @@ class AiPlayer < Player
 		nil
 	end
 
-	def find_winning(marker)
-		@board.select { |s| s.winning? marker }.first
-	end
-
 	def find_threatening(marker)
 		@board.select { |s| s.threatening? marker }.first
 	end
 
 	def move
 		#look for a winning move, and make it if it exists
-		winning = find_winning @marker
+		winning = find_threatening @marker
 
 		return @board.set winning.first_empty, @marker if winning
 
-		#look for a threatening move,
-		threatening = find_threatening other_player(@marker)
+		#look for a threatening move, and block it if it exists
+		threatening = find_threatening identify_other_player
 
 		return @board.set threatening.first_empty, @marker if threatening
 
