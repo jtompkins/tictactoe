@@ -9,6 +9,16 @@ class Sequence
 		@cells = cells
 	end
 
+	def cells
+		@cells
+	end
+
+	protected :cells
+
+	def ==(other_seq)
+		@cells == other_seq.cells
+	end
+
 	def first_empty
 		@cells.select { |k,v| v == nil }.keys.first
 	end

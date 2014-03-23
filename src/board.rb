@@ -24,7 +24,7 @@ class Board
 	def self.translate(cell)
 		if cell < 1
 			0
-		elsif cell > 10
+		elsif cell > 9
 			8
 		else
 			cell - 1
@@ -57,10 +57,10 @@ class Board
 
 	private
 
-	def get(cell)
+	def get_s(cell)
 		return "" unless Board.valid_cell? cell
 
-		c = @board[Board.translate cell]
+		c = get cell
 
 		c == nil ? cell : c
 	end
@@ -69,6 +69,12 @@ class Board
 
 	def each
 		@@sequences.each { |s| yield get_seq s }
+	end
+
+	def get(cell)
+		return "" unless Board.valid_cell? cell
+
+		@board[Board.translate cell]
 	end
 
 	def set(cell, marker)
@@ -133,6 +139,10 @@ class Board
 		Sequence.new indices.map { |i| [i, get(i)]}.to_h
 	end
 
+	def empty?
+		all? { |s| s.empty? }
+	end
+
 	def tied?
 		all? { |s| s.full? and !s.winning? }
 	end
@@ -142,11 +152,11 @@ class Board
 	end
 
 	def to_s
-		str = " #{get(1)} | #{get(2)} | #{get(3)} \n"
+		str = " #{get_s(1)} | #{get_s(2)} | #{get_s(3)} \n"
 		str << "-----------\n"
-		str << " #{get(4)} | #{get(5)} | #{get(6)} \n"
+		str << " #{get_s(4)} | #{get_s(5)} | #{get_s(6)} \n"
 		str << "-----------\n"
-		str << " #{get(7)} | #{get(8)} | #{get(9)} \n"
+		str << " #{get_s(7)} | #{get_s(8)} | #{get_s(9)} \n"
 
 		str
 	end

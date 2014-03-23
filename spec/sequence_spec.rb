@@ -24,6 +24,12 @@ describe Sequence do
 			seq.winning?.must_equal true
 		end
 
+		it "shouldn't identify a winning sequence as threatening" do
+			seq = Sequence.new({1=>:X, 2=>:X, 3=>:X})
+
+			seq.threatening?.must_equal false
+		end
+
 		it "should identify a winning sequence for a specific player" do
 			seq = Sequence.new({1=>:X, 2=>:X, 3=>:X})
 
@@ -35,6 +41,12 @@ describe Sequence do
 			seq = Sequence.new({1=>:X, 2=>:O, 3=>:X})
 
 			seq.winning?.must_equal false
+		end
+
+		it "shouldn't show a non-winning but full sequence as threatening" do
+			seq = Sequence.new({1=>:X, 2=>:O, 3=>:X})
+
+			seq.threatening?.must_equal false
 		end
 	end
 
@@ -56,15 +68,19 @@ describe Sequence do
 		it "should identify a threatening sequence for a specific player" do
 			seq = Sequence.new({1=>:X, 2=>:X, 3=>nil})
 
-			seq.full?.must_equal false
 			seq.threatening?(:X).must_equal true
 			seq.threatening?(:O).must_equal false
+		end
+
+		it "shouldn't identify an empty sequence as threatening" do
+			seq = Sequence.new({1=>nil, 2=>nil, 3=>nil})
+
+			seq.threatening?.must_equal false
 		end
 
 		it "shouldn't identify a mostly-full sequence as threatening" do
 			seq = Sequence.new({1=>:X, 2=>nil, 3=>:O})
 
-			seq.full?.must_equal false
 			seq.threatening?.must_equal false
 		end
 
