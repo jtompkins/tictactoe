@@ -126,6 +126,16 @@ describe Board do
 			board.set?(2).must_equal true
 		end
 
+		it "should raise an ArgumentError if an invalid marker, cell, or space is given" do
+			board = Board.new Array.new(9, nil)
+
+			bad_cell = 11
+
+			-> { board.set :upper_left, :bad_marker }.must_raise ArgumentError
+			-> { board.set :bad_space, :X }.must_raise ArgumentError
+			-> { board.set bad_cell, :X }.must_raise ArgumentError
+		end
+
 		it "should allow you to check a cell with a number or a symbol" do
 			board = Board.new Array.new(9, nil)
 
@@ -136,6 +146,16 @@ describe Board do
 			board.set?(:upper_left, :O).must_equal false
 		end
 
+		it "should raise an ArgumentError if an invalid marker, cell, or space is given" do
+			board = Board.new Array.new(9, nil)
+
+			bad_cell = 11
+
+			-> { board.set? :upper_left, :bad_marker }.must_raise ArgumentError
+			-> { board.set? :bad_space, :X }.must_raise ArgumentError
+			-> { board.set? bad_cell, :X }.must_raise ArgumentError
+		end
+
 		it "should return a specific sequence by name" do
 			board = Board.new Array.new(9, nil)
 
@@ -143,6 +163,12 @@ describe Board do
 			seq = board.get_seq :left_diag
 
 			(seq == test_seq).must_equal true
+		end
+
+		it "should raise an ArgumentError if an invalid sequence is given" do
+			board = Board.new Array.new(9, nil)
+
+			-> { board.get_seq :bad_sequence }.must_raise ArgumentError
 		end
 	end
 
