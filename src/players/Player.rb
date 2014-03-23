@@ -1,4 +1,4 @@
-require_relative "../Board"
+require_relative "../board"
 
 class Player
 	attr_reader :marker

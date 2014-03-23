@@ -1,4 +1,4 @@
-require_relative "Sequence"
+require_relative "sequence"
 
 class Board
 	include Enumerable

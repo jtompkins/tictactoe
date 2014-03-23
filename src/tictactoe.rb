@@ -1,6 +1,6 @@
-require_relative "Board"
-require_relative "players/HumanPlayer"
-require_relative "players/AiPlayer"
+require_relative "board"
+require_relative "players/human_player"
+require_relative "players/ai_player"
 
 class TicTacToe
 	def self.make_player(type, board, marker)

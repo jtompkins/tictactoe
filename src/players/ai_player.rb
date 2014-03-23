@@ -1,5 +1,5 @@
-require_relative "../Board"
-require_relative "Player"
+require_relative "../board"
+require_relative "player"
 
 class AiPlayer < Player
 	def identify_other_player
