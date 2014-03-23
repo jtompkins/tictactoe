@@ -1,8 +1,7 @@
 task :default => [:test]
 
 task :test do
-  ruby "spec/sequence_spec.rb"
-  ruby "spec/board_spec.rb"
-  ruby "spec/player_spec.rb"
-  ruby "spec/ai_player_spec.rb"
+	Dir.glob('spec/*.rb') do |file|
+		ruby "#{file}" if File.file? file
+	end
 end
