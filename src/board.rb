@@ -58,7 +58,7 @@ class Board
 	private
 
 	def get_s(cell)
-		return "" unless Board.valid_cell? cell
+		raise ArgumentError, "Invalid cell." unless Board.valid_cell? cell
 
 		c = get cell
 
@@ -72,7 +72,7 @@ class Board
 	end
 
 	def get(cell)
-		return "" unless Board.valid_cell? cell
+		return nil unless Board.valid_cell? cell
 
 		@board[Board.translate cell]
 	end
@@ -113,7 +113,7 @@ class Board
 	end
 
 	def get_seq(sequence)
-		return nil unless Board.valid_seq? sequence
+		raise ArgumentError, "Invalid sequence." unless Board.valid_seq? sequence
 
 		indices = case sequence
 			when :top
