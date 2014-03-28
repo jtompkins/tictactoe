@@ -51,11 +51,13 @@ class AiPlayer < Player
 
 		return @board.set threatening.first_empty, @marker if threatening
 
-		# no winning or threatening moves, so let's just pick a spot
-		# first, check the corners
-		open_corner = find_open_corner
+		if @marker == :X
+			# no winning or threatening moves, so let's just pick a spot
+			# first, check the corners
+			open_corner = find_open_corner
 
-		return @board.set open_corner, @marker if open_corner
+			return @board.set open_corner, @marker if open_corner
+		end
 
 		# corner isn't open, check the center
 		return @board.set :center, @marker unless @board.set? :center
